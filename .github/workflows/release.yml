@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Toolset Releases
+name: Inventory Releases
 
 on:
   workflow_dispatch:
