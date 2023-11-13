@@ -114,8 +114,8 @@ jobs:
           sudo pip install --upgrade pyinstaller
           sudo pip install pyinstaller-versionfile
       - name: Build binaries
+          # sudo bash .build/make-version.sh ${{env.PS_VERSION}}
         run: |
-          sudo bash .build/make-version.sh ${{env.PS_VERSION}}
           sudo bash .build/build-ubuntu.sh
       - name: Deploy artifacts
         # See: https://github.com/marketplace/actions/create-release
