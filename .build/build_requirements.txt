@@ -1,0 +1,10 @@
+
+# Install pyinstaller
+pip install pyinstaller
+
+# Upgrade pyinstaller
+pip install --upgrade pyinstaller
+
+
+# Additional tools
+pip install pyinstaller-versionfile
