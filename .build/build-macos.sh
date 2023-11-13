@@ -23,24 +23,5 @@ rm -f -r --interactive=never cxinventory.spec
 rm -f -r --interactive=never temp
 tar -czvf ../.dist/cxinventory-macos.tar.gz -C ../.dist/cxinventory/macos .
 
-# --------------------------------
-# Create cxquerymerger executable
-# --------------------------------
-pyinstaller --clean --noconfirm --onefile --nowindow --distpath=../.dist/cxquerymerger/macos --workpath=temp --paths=../shared --icon=icon.icns ../cxquerymerger/cxquerymerger.py
-cp ../cxquerymerger/src/cxquerymergerconfig.yaml ../.dist/cxquerymerger/macos/config.yaml
-cp ../LICENSE ../.dist/cxquerymerger/macos/LICENSE
-rm -f -r --interactive=never cxquerymerger.spec
-rm -f -r --interactive=never temp
-tar -czvf ../.dist/cxquerymerger-macos.tar.gz -C ../.dist/cxquerymerger/macos .
-
-# ---------------------------
-# Create cxscanner executable
-# ---------------------------
-pyinstaller --clean --noconfirm --onefile --nowindow --distpath=../.dist/cxscanner/macos --workpath=temp --paths=../shared --icon=icon.icns ../cxscanner/cxscanner.py
-cp ../cxscanner/src/cxscannerconfig.yaml ../.dist/cxscanner/macos/config.yaml
-cp ../LICENSE ../.dist/cxscanner/macos/LICENSE
-rm -f -r --interactive=never cxscanner.spec
-rm -f -r --interactive=never temp
-tar -czvf ../.dist/cxscanner-macos.tar.gz -C ../.dist/cxscanner/macos .
 
 popd
