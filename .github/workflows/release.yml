@@ -1,0 +1,161 @@
+# This is a basic workflow that is manually triggered
+
+name: Toolset Releases
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      tag:
+        description: 'Next release tag (NEW=NEW/EMPTY=SAME/x.x.x=SET)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+
+  # Process version nummber
+  process_version:
+    outputs:
+      VERSION_TAG: ${{env.PS_VERSION}}
+    runs-on: ubuntu-latest
+    name: Process Version
+    steps:
+      # The version was set from input
+      - name: Set version from input
+        if: ( inputs.tag != 'NEW' && inputs.tag != '' )
+        run: echo "PS_VERSION=${{inputs.tag}}" >> $GITHUB_ENV
+      # The version is NEW or EMPTY, we need checkout
+      - name: Checkout
+        if: ( inputs.tag == 'NEW' || inputs.tag == '' )
+        uses: actions/checkout@v3
+        with:
+           fetch-depth: 0
+      # The version is NEW or EMPTY, we need the current version
+      - name: Get current release version
+        if: ( inputs.tag == 'NEW' || inputs.tag == '' )
+        id: getcurrentversion
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 0.0.0
+      # Set current version as release version     
+      - name: Set current release version
+        if: ( inputs.tag == 'NEW' || inputs.tag == '' )
+        id: setcurrentversion
+        run: |
+          if [ "${{steps.getcurrentversion.outputs.tag}}" == "0.0.0" ]; then
+            echo "PS_VERSION=1.0.0" >> $GITHUB_ENV
+          else
+            echo "PS_VERSION=${{steps.getcurrentversion.outputs.tag}}" >> $GITHUB_ENV
+          fi
+      # Increment next minor version 
+      - name: Increment next minor release version
+        if: ( inputs.tag == 'NEW' && steps.getcurrentversion.outputs.tag != '0.0.0' )
+        id: inccurrentversion
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{steps.getcurrentversion.outputs.tag}}
+      # Set next current version 
+      - name: Increment next minor release version
+        if: ( inputs.tag == 'NEW' && steps.getcurrentversion.outputs.tag != '0.0.0' )
+        id: newcurrentversion
+        run: echo "PS_VERSION=${{steps.inccurrentversion.outputs.tag}}" >> $GITHUB_ENV
+        
+  # Windows builds job
+  build_windows:
+    needs: process_version
+    runs-on: windows-latest
+    name: Windows Builds
+    env:
+      PS_VERSION: ${{needs.process_version.outputs.VERSION_TAG}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+           fetch-depth: 1
+      - name: Update Python
+        run: |
+          pip install -r .build\requirements.txt
+          pip install pyinstaller
+          pip install --upgrade pyinstaller
+          pip install pyinstaller-versionfile
+      - name: Build binaries
+        run: |
+          .build\make-version.bat ${{env.PS_VERSION}}
+          .build\build-windows.bat
+      - name: Deploy artifacts
+        # See: https://github.com/marketplace/actions/create-release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: .dist/*.zip
+          name: "Checkmarx PS Toolset ${{env.PS_VERSION}}" 
+          tag: "${{env.PS_VERSION}}"
+          allowUpdates: true
+
+  # Ubuntu builds job
+  build_ubuntu:
+    needs: [process_version,build_windows] 
+    runs-on: ubuntu-latest
+    name: Ubuntu Builds
+    env:
+      PS_VERSION: ${{needs.process_version.outputs.VERSION_TAG}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+           fetch-depth: 1
+      - name: Update Python
+        run: |
+          sudo pip install -r .build/requirements.txt
+          sudo pip install pyinstaller
+          sudo pip install --upgrade pyinstaller
+          sudo pip install pyinstaller-versionfile
+      - name: Build binaries
+        run: |
+          sudo bash .build/make-version.sh ${{env.PS_VERSION}}
+          sudo bash .build/build-ubuntu.sh
+      - name: Deploy artifacts
+        # See: https://github.com/marketplace/actions/create-release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: .dist/*.tar.gz
+          name: "Checkmarx PS Toolset ${{env.PS_VERSION}}" 
+          tag: "${{env.PS_VERSION}}"
+          allowUpdates: true
+    
+  # Macos builds job
+  # To activate when signing is available
+  # build_macos:
+  #   needs: [process_version,build_ubuntu] 
+  #   runs-on: macos-latest
+  #   name: Macos Builds
+  #   env:
+  #     PS_VERSION: ${{needs.process_version.outputs.VERSION_TAG}}
+  #     PS_GITHUB_BUILD: 1
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #          fetch-depth: 1
+  #     - name: Update Python
+  #       run: |
+  #         sudo pip3 install -r .build/requirements.txt
+  #         sudo pip3 install pyinstaller
+  #         sudo pip3 install --upgrade pyinstaller
+  #         sudo pip3 install pyinstaller-versionfile
+  #     - name: Build binaries
+  #       run: |
+  #         sudo bash .build/make-version.sh ${{env.PS_VERSION}}
+  #         sudo bash .build/build-macos.sh
+  #     - name: Deploy artifacts
+  #       # See: https://github.com/marketplace/actions/create-release
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: .dist/*.tar.gz
+  #         name: "Checkmarx PS Toolset ${{env.PS_VERSION}}" 
+  #         tag: "${{env.PS_VERSION}}"
+  #         allowUpdates: true
+      
