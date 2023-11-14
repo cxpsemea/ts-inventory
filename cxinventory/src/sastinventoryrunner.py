@@ -567,7 +567,7 @@ class sastinventory(baserunner) :
             for item in cachedata :
                 # Get how many associated
                 usercount = len(list( filter( lambda el: item['id'] == el['authenticationProviderId'], self.cache(sastcachetype.ac_users) ) ))
-                sinfo = 'FQDN: ' + item['fullyQualifiedName'] + ' (' + str(len(usercount)) + ' users)'
+                sinfo = 'FQDN: ' + item['fullyQualifiedName'] + ' (' + str(usercount) + ' users)'
                 self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, item['id'], item['name'], None, sinfo ] )
             # Register index
             if len(cachedata) > 0 :
@@ -1149,6 +1149,11 @@ class sastinventory(baserunner) :
                 if len(messages) > 0 :
                     sinfo = '\n'.join(messages)
 
+                if 'pathFilter' in item.keys() :
+                    gfilters = item['pathFilter'] 
+                else :
+                    gfilters = globfilters.getfilters(item['excludedFiles'], item['excludedFolders']),
+
                 # Write project data
                 self.__projswriter.writerow( [
                         STATUS[itemstatus], 
@@ -1166,7 +1171,7 @@ class sastinventory(baserunner) :
                         True if item['issueTrackingId'] else None,
                         item['excludedFiles'],
                         item['excludedFolders'],
-                        globfilters.getfilters(item['excludedFiles'], item['excludedFolders']),
+                        gfilters,
                         True if item['ScheduledScans'] else None,
                         True if item['preScanAction'] else None,
                         True if item['postScanAction'] else None,
