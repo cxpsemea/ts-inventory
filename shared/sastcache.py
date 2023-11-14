@@ -212,9 +212,24 @@ class sastcache(object) :
             else :
                 data['issueTrackingSettings']   = None
                 data['issueTrackingId']         = None
-        # Exclusions
-        data['excludedFiles']               = project['ExcludedFiles']
-        data['excludedFolders']             = project['ExcludedFolders']
+        if 'PathFilter' in project.keys() :
+            # Exclusions, 9.6.1 up
+            pathfilter = project['PathFilter']
+            # Workaround for case #00187800
+            if not pathfilter :
+                try :
+                    auxdata = self.conn.sast.get('/cxrestapi/projects/' + str(data['id']) + '/sourcecode/pathfilter', None, '5.0' )
+                    if auxdata :
+                        pathfilter = auxdata['pathFilter']
+                except :
+                    pass
+            data['pathFilter']                  = pathfilter
+            data['excludedFiles']               = None
+            data['excludedFolders']             = None
+        else :
+            # Exclusions, up to 9.5.5
+            data['excludedFiles']               = project['ExcludedFiles']
+            data['excludedFolders']             = project['ExcludedFolders']
         # Custom fields
         data['customFields']                = project['CustomFields']
         data['customFieldsNames']           = list( field['FieldName'] for field in project['CustomFields'] ) 
@@ -541,7 +556,7 @@ class sastcache(object) :
                 domainproviders = self.conn.ac.get('/cxrestapi/auth/authenticationproviders')
                 for domain in domainlist :    
                     provid  = next(filter(lambda el: el['providerId'] == domain['id'] and el['providerType'] == 'Domain', domainproviders), None)['id']            
-                    domaindata.append( { "id": provid, "name": domain['name'], "fullyQualifiedName": ldap['fullyQualifiedName'] })
+                    domaindata.append( { "id": provid, "name": domain['name'], "fullyQualifiedName": domain['fullyQualifiedName'] })
                 self.__caches[sastcachetype.ac_domain_settings] = domaindata
                 lcount = len(self.__caches[sastcachetype.ac_domain_settings])
             elif cachetype == sastcachetype.ac_teams :

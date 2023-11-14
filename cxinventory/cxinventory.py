@@ -345,6 +345,7 @@ class cxinventory(baserunner) :
             if errorcount > 0 :
                 cxlogger.verbose( str(errorcount) + ' errors were found.' )    
             cxlogger.verbose( '============================================================' )
+            cxlogger.verbose( '' )
         
 
 if __name__ == '__main__' :
