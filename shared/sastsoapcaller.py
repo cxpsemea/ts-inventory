@@ -145,7 +145,7 @@ class soapapi(object):
             elif self.__sessid == "0" :
                 self.soap_logon()
 
-        settings = Settings(strict=False, force_https=False, xml_huge_tree=True, extra_http_headers=shead)
+        settings = Settings(strict=False, force_https=True, xml_huge_tree=True, extra_http_headers=shead)
 
         session = Session()
         session.verify = False
