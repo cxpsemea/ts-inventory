@@ -119,7 +119,7 @@ class auditapi(object):
                 self.get_auth_token()
             shead = { "Authorization":self.__token }
 
-        settings = Settings(strict=False, force_https=False, xml_huge_tree=True, extra_http_headers=shead)
+        settings = Settings(strict=False, force_https=True, xml_huge_tree=True, extra_http_headers=shead)
 
         session = Session()
         session.verify = False
