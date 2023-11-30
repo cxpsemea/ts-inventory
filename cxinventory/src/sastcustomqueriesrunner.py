@@ -199,6 +199,11 @@ class sastcustomqueries(baserunner) :
                 # Projects using indirectly
                 projindirect  = list( filter( lambda el: lang in el['sortedlanguages'] and el['teamId'] in sub_teams and el['presetId'] in presetids, self.cacheoneof([sastcachetype.projectssimple, sastcachetype.projectsfull])) )
 
+                # Excel cell text max size control, 32767 chars per cell
+                xsource: str = item['Source']
+                if len(xsource) > 32700 :
+                    xsource = xsource[:32700] + ' ... '
+
                 self.__queryswriter.writerow( [
                     SOBJECT,
                     queryid,
@@ -220,7 +225,7 @@ class sastcustomqueries(baserunner) :
                     len(parents) if len(parents) > 0 else None,               # Teams-in-chain
                     len(dependants) if len(dependants) > 0 else None,            # Teams-dependant
                     len(projindirect) if len(projindirect) > 0 else None,          # Indirect projects affected
-                    item['Source']
+                    xsource
                 ] )
 
             # Close
