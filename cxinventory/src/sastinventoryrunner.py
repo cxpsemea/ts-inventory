@@ -1152,7 +1152,7 @@ class sastinventory(baserunner) :
                 if 'pathFilter' in item.keys() :
                     gfilters = item['pathFilter'] 
                 else :
-                    gfilters = globfilters.getfilters(item['excludedFiles'], item['excludedFolders']),
+                    gfilters = globfilters.getfilters(item['excludedFiles'], item['excludedFolders'])
 
                 # Write project data
                 self.__projswriter.writerow( [
