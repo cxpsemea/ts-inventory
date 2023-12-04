@@ -29,6 +29,9 @@ OBJ_QUERIES_PROJ        = 'CUSTOM-QUERIES-PROJ'
 # CSV output files
 OUT_QUERIES             = 'sast_customqueries.csv'
 
+# Max query text size for excel cells
+MAX_QUERY_SIZE          = 32500         
+
 # CSV file headers
 CSV_QUERIES             = [ 'QUERY-TYPE', 'ID', 'KIND', 'ORIGINAL', 'NAME', 'LANGUAGE', 'GROUP', 'VERSION', 'SEVERITY', 
                            'CWE', 'CATEGORIES-COUNT', 'PROJECTS-AFFECTED', 'PRESETS-AFFECTED',
@@ -107,8 +110,8 @@ class sastcustomqueries(baserunner) :
 
                 # Excel cell text max size control, 32767 chars per cell
                 xsource: str = item['Source']
-                if len(xsource) > 32700 :
-                    xsource = xsource[:32700] + ' ... '
+                if len(xsource) > MAX_QUERY_SIZE :
+                    xsource = xsource[:MAX_QUERY_SIZE] + ' ... '
 
                 self.__queryswriter.writerow( [
                     SOBJECT,
@@ -207,8 +210,8 @@ class sastcustomqueries(baserunner) :
 
                 # Excel cell text max size control, 32767 chars per cell
                 xsource: str = item['Source']
-                if len(xsource) > 32700 :
-                    xsource = xsource[:32700] + ' ... '
+                if len(xsource) > MAX_QUERY_SIZE :
+                    xsource = xsource[:MAX_QUERY_SIZE] + ' ... '
 
                 self.__queryswriter.writerow( [
                     SOBJECT,
@@ -278,8 +281,8 @@ class sastcustomqueries(baserunner) :
 
                 # Excel cell text max size control, 32767 chars per cell
                 xsource: str = item['Source']
-                if len(xsource) > 32700 :
-                    xsource = xsource[:32700] + ' ... '
+                if len(xsource) > MAX_QUERY_SIZE :
+                    xsource = xsource[:MAX_QUERY_SIZE] + ' ... '
 
                 self.__queryswriter.writerow( [
                     SOBJECT,
