@@ -46,6 +46,7 @@ OBJ_AC_TEAMS            = 'AC-TEAMS'
 OBJ_AC_ROLES            = 'AC-ROLES'
 OBJ_AC_USERS_APP        = 'AC-USERS-APPLICATION'
 OBJ_AC_USERS_OTHER      = 'AC-USERS-EXTERNAL'
+OBJ_AC_USERS_EMAILS     = 'AC-USERS-EMAIL-DOMAINS'
 OBJ_PROJECTS            = 'PROJECTS'
 
 
@@ -274,9 +275,11 @@ class scainventory(baserunner) :
         try :
             if len(cachedata) > 0 :
                 SSTATUS = SWARNING
-            # Register inventory
-            for item in cachedata :
-                self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, item['id'], item['userName'], None, item['email'] ] )
+            # Register counts only
+            self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, None, ginfo, len(cachedata), None ] )
+            # # Register inventory
+            # for item in cachedata :
+            #     self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, item['id'], item['userName'], None, item['email'] ] )
             self.__sumrywriter.writerow( [STATUS[SSTATUS], SOBJECT, len(cachedata), ginfo ] )
             # Close
             cxlogger.verbose('  - Processed ' + inventory_name + ' (' + str(len(cachedata)) + ') ' + self.duration(dtini, True), False )
@@ -301,12 +304,48 @@ class scainventory(baserunner) :
         try :
             if len(cachedata) > 0 :
                 SSTATUS = SWARNING
-            # Register inventory
-            for item in cachedata :
-                self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, item['id'], item['userName'], None, item['email'] ] )
+            # Register counts only
+            self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, None, ginfo, len(cachedata), None ] )
+            # # Register inventory
+            # for item in cachedata :
+            #     self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, item['id'], item['userName'], None, item['email'] ] )
             self.__sumrywriter.writerow( [STATUS[SSTATUS], SOBJECT, len(cachedata), ginfo ] )
             # Close
             cxlogger.verbose('  - Processed ' + inventory_name + ' (' + str(len(cachedata)) + ') ' + self.duration(dtini, True), False )
+        except Exception as e:
+            errorcount += 1
+            cxlogger.verbose( '  - Processing ' + inventory_name + ' failed with "' + str(e) + '"', True, False, True, e )
+        return errorcount
+
+
+
+    def inventory_ac_users_email_domains(self) :
+        cachedata = self.cache(scacachetype.ac_users)
+        emails    = []
+        SOBJECT = OBJ_AC_USERS_EMAILS
+        SSTATUS = SOK
+        errorcount = 0
+        inventory_name = 'access-control users email domains'
+        dtini = datetime.now()
+        cxlogger.verbose( '  - Processing ' + inventory_name )
+        try :
+            # Read-it
+            for item in cachedata :
+                email = item['email']
+                if email :
+                    p = email.find('@')
+                    if p >= 0 :
+                        email = email[p:].strip()
+                if email :
+                    emails.append(email)
+            emails = list( dict.fromkeys(emails) )
+            if len(emails) > 0 :
+                SSTATUS = SWARNING
+            for item in emails :
+                self.__datawriter.writerow( [STATUS[SSTATUS], SOBJECT, None, item, None, None ] )
+            self.__sumrywriter.writerow( [STATUS[SSTATUS], SOBJECT, len(emails), None ] )
+            # Close
+            cxlogger.verbose('  - Processed ' + inventory_name + ' (' + str(len(emails)) + ') ' + self.duration(dtini, True), False )
         except Exception as e:
             errorcount += 1
             cxlogger.verbose( '  - Processing ' + inventory_name + ' failed with "' + str(e) + '"', True, False, True, e )
@@ -430,6 +469,7 @@ class scainventory(baserunner) :
             errorcount += self.inventory_ac_roles() if errorcount == 0 else 0
             errorcount += self.inventory_ac_users_application() if errorcount == 0 else 0
             errorcount += self.inventory_ac_users_external() if errorcount == 0 else 0
+            errorcount += self.inventory_ac_users_email_domains() if errorcount == 0 else 0
             # Projects and triages
             errorcount += self.inventory_projects() if errorcount == 0 else 0
             # Done
