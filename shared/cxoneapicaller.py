@@ -77,7 +77,14 @@ class cxoneapi(object):
             self.__clientid = 'ast-app'
         self.__granttype    = granttype
         if not self.__granttype :
-            self.__granttype = 'refresh_token'
+            if self.__clientid == 'ast-app' :
+                self.__granttype = 'refresh_token'
+            else :
+                self.__granttype = 'client_credentials'
+        # Detect if using oauth or apikey
+        if self.__clientid != 'ast-app' or self.__granttype != 'refresh_token' :
+            self.__granttype    = 'client_credentials'
+        # Check proxy
         self.__proxyhost    = None
         if proxy_url :
             proxyurl = proxy_url.lower()
@@ -112,10 +119,16 @@ class cxoneapi(object):
     def get_auth_token(self):
         sapipath = self.__keycloak + '/auth/realms/' + self.__tenant + '/protocol/openid-connect/token'
         shead   = { 'Content-Type':'application/x-www-form-urlencoded' }
-        sbody   = { 'grant_type':self.__granttype,
-                    'client_id':self.__clientid,
-                    'refresh_token':self.__apikey,
-                  }
+        if self.__granttype == 'client_credentials' :
+            sbody   = { 'grant_type':self.__granttype,
+                        'client_id':self.__clientid,
+                        'client_secret':self.__apikey,
+                      }
+        else :
+            sbody   = { 'grant_type':self.__granttype,
+                        'client_id':self.__clientid,
+                        'refresh_token':self.__apikey,
+                      }
 
         sresponse = requests.post( sapipath, data = sbody, headers = shead, proxies = self.__proxyhost, verify = False )
 
