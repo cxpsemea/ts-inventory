@@ -174,7 +174,7 @@ class sastconn(object):
     # ---------------------
     # Permissions check
     # ---------------------
-    def checkpermissions( self, perm_sast: bool = True, perm_accesscontrol: bool = False, perm_odata: bool = False, perm_audit: bool = False ) :
+    def checkpermissions( self, perm_sast: bool = True, perm_accesscontrol: bool = False, perm_odata: bool = False, perm_audit: bool = False, read_only: bool = False ) :
         auth_error = ''
         auth_sast = False
         auth_ac = False
@@ -217,40 +217,61 @@ class sastconn(object):
 
         if perm_sast and not auth_sast and len(user_permissions) > 0 and len(all_permissions) > 0 :
             xpermissions = list( filter( lambda el: el['id'] in user_permissions, all_permissions ) )
-            if next( filter( lambda el: el['name'] == 'save-sast-scan', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'delete-sast-scan', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'save-project', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'delete-project', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'view-failed-sast-scan', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'download-scan-log', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'download-system-logs', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-data-analysis-templates', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'generate-scan-report', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-result-comment', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-result-severity', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'open-issue-tracking-tickets', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'export-scan-results', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'view-results', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'see-support-link', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-data-retention', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-engine-servers', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-system-settings', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-external-services-settings', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-custom-fields', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-issue-tracking-systems', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-pre-post-scan-actions', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-custom-description', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'create-preset', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'update-and-delete-preset', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'update-project', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'create-project', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'manage-result-assignee', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'set-result-state-toverify', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'set-result-state-notexploitable', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'set-result-state-confirmed', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'set-result-state-urgent', xpermissions), None ) and \
-              next( filter( lambda el: el['name'] == 'set-result-state-proposednotexploitable', xpermissions), None ) :
-                auth_sast = True
+            if read_only :
+                if next( filter( lambda el: el['name'] == 'view-failed-sast-scan', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'download-scan-log', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'download-system-logs', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-data-analysis-templates', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'generate-scan-report', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'export-scan-results', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'view-results', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'see-support-link', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-data-retention', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-engine-servers', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-system-settings', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-external-services-settings', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-custom-fields', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-issue-tracking-systems', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-pre-post-scan-actions', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-custom-description', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-result-assignee', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'update-project', xpermissions), None ) :
+                    auth_sast = True
+            else :
+                if next( filter( lambda el: el['name'] == 'save-sast-scan', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'delete-sast-scan', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'save-project', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'delete-project', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'view-failed-sast-scan', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'download-scan-log', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'download-system-logs', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-data-analysis-templates', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'generate-scan-report', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-result-comment', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-result-severity', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'open-issue-tracking-tickets', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'export-scan-results', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'view-results', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'see-support-link', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-data-retention', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-engine-servers', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-system-settings', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-external-services-settings', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-custom-fields', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-issue-tracking-systems', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-pre-post-scan-actions', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-custom-description', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'create-preset', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'update-and-delete-preset', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'update-project', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'create-project', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'manage-result-assignee', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'set-result-state-toverify', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'set-result-state-notexploitable', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'set-result-state-confirmed', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'set-result-state-urgent', xpermissions), None ) and \
+                    next( filter( lambda el: el['name'] == 'set-result-state-proposednotexploitable', xpermissions), None ) :
+                    auth_sast = True
 
 
         if perm_accesscontrol and not auth_ac and len(user_permissions) > 0 and len(all_permissions) > 0 :
