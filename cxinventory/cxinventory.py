@@ -176,7 +176,7 @@ class cxinventory(baserunner) :
                     errorcount += 1
                     raise Exception( 'Failed connecting to SAST with "' + str(e) + '"', True, True, e )
                 # Check if THIS user has the required permissions
-                cxsastconn.checkpermissions( perm_sast = True, perm_accesscontrol = True, perm_odata = True, perm_audit= False )
+                cxsastconn.checkpermissions( perm_sast = True, perm_accesscontrol = True, perm_odata = True, perm_audit= False, read_only = True )
                 # Check projects filter
                 projectsfilter = self.config.value('filter.projects')
                 if projectsfilter :
