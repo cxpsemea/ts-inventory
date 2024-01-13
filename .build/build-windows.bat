@@ -11,6 +11,6 @@ copy ..\LICENSE ..\.dist\cxinventory\windows\LICENSE
 del cxinventorymanifestwindows.txt
 del cxinventory.spec
 rmdir /s /q temp
-powershell Compress-Archive -Force -CompressionLevel Optimal -Path ..\.dist\cxinventory\windows\*.* ..\.dist\cxinventory-win64.zip
+powershell Compress-Archive -Force -CompressionLevel Optimal -Path ..\.dist\cxinventory\windows\* ..\.dist\cxinventory-win64.zip
 
 popd
