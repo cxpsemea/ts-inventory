@@ -913,7 +913,8 @@ class sastinventory(baserunner) :
                 team = item['OwningTeamName']
                 lang = item['LanguageName']
                 # Get projects using (direct or indirect)
-                projusing = list( filter( lambda el: lang in el['sortedlanguages'] and (el['teamFullName'] == team or el['teamFullName'].startswith(team + '/') ), self.cache(sastcachetype.projectsfull)) )
+                # projusing = list( filter( lambda el: lang in el['sortedlanguages'] and (el['teamFullName'] == team or el['teamFullName'].startswith(team + '/') ), self.cache(sastcachetype.projectsfull)) )
+                projusing = list( filter( lambda el: lang in el['sortedlanguages'] and (team and (el['teamFullName'] == team or el['teamFullName'].startswith(team + '/'))), self.cache(sastcachetype.projectsfull)) )
                 if len(projusing) > 0 :
                     inuse += 1
                     itemstatus = self.setstatus(itemstatus, SFATAL )
