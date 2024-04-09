@@ -913,23 +913,25 @@ class sastinventory(baserunner) :
                 team = item['OwningTeamName']
                 lang = item['LanguageName']
                 # Get projects using (direct or indirect)
-                # projusing = list( filter( lambda el: lang in el['sortedlanguages'] and (el['teamFullName'] == team or el['teamFullName'].startswith(team + '/') ), self.cache(sastcachetype.projectsfull)) )
-                projusing = list( filter( lambda el: lang in el['sortedlanguages'] and (team and (el['teamFullName'] == team or el['teamFullName'].startswith(team + '/'))), self.cache(sastcachetype.projectsfull)) )
-                if len(projusing) > 0 :
-                    inuse += 1
-                    itemstatus = self.setstatus(itemstatus, SFATAL )
-                    SSTATUS = self.setstatus(SSTATUS, SFATAL )
-                    for proj in projusing :
-                        self.__xteamqry.append(proj['id'])
-                # Count hierachy (upwards)
-                xteams = team[1:].split('/')
                 teams = []
                 steam = ''
-                for xteam in xteams :
-                    steam = steam + '/' + xteam
-                    teams.append(steam)
-                teams = teams[:-1]
-                parentqueries = list( filter( lambda el: el['LanguageName'] == lang and el['Name'] == item['Name'] and el['OwningTeamName'] in teams, cachedata ) )
+                parentqueries = []
+                projusing = []
+                if team :
+                    projusing = list( filter( lambda el: lang in el['sortedlanguages'] and (el['teamFullName'] == team or el['teamFullName'].startswith(team + '/')), self.cache(sastcachetype.projectsfull)) )
+                    if len(projusing) > 0 :
+                        inuse += 1
+                        itemstatus = self.setstatus(itemstatus, SFATAL )
+                        SSTATUS = self.setstatus(SSTATUS, SFATAL )
+                        for proj in projusing :
+                            self.__xteamqry.append(proj['id'])
+                    # Count hierachy (upwards)
+                    xteams = team[1:].split('/')
+                    for xteam in xteams :
+                        steam = steam + '/' + xteam
+                        teams.append(steam)
+                    teams = teams[:-1]
+                    parentqueries = list( filter( lambda el: el['LanguageName'] == lang and el['Name'] == item['Name'] and el['OwningTeamName'] in teams, cachedata ) )
                 sinfo = item['LanguageName'] + ', team: [' + str(item['OwningTeam']) + '] ' + item['OwningTeamName'] + ', ' + str(len(parentqueries)) + ' parents (' + item['PackageFullName'] + ')'
                 self.__datawriter.writerow( [STATUS[itemstatus], SOBJECT, item['QueryId'], item['Name'], len(projusing), sinfo ] )
             if inuse > 0 :
