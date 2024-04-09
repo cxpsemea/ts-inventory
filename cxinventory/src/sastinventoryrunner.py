@@ -932,7 +932,7 @@ class sastinventory(baserunner) :
                         teams.append(steam)
                     teams = teams[:-1]
                     parentqueries = list( filter( lambda el: el['LanguageName'] == lang and el['Name'] == item['Name'] and el['OwningTeamName'] in teams, cachedata ) )
-                sinfo = item['LanguageName'] + ', team: [' + str(item['OwningTeam']) + '] ' + item['OwningTeamName'] + ', ' + str(len(parentqueries)) + ' parents (' + item['PackageFullName'] + ')'
+                sinfo = item['LanguageName'] + ', team: [' + str(item['OwningTeam']) + '] ' + str(item['OwningTeamName']) + ', ' + str(len(parentqueries)) + ' parents (' + str(item['PackageFullName']) + ')'
                 self.__datawriter.writerow( [STATUS[itemstatus], SOBJECT, item['QueryId'], item['Name'], len(projusing), sinfo ] )
             if inuse > 0 :
                 ginfo = str(inuse) + ' in use, directly or indirectly'
