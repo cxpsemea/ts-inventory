@@ -419,7 +419,7 @@ class sastinventory(baserunner) :
 
 
     def inventory_postscanactions(self) :
-        cachedata = list( filter( lambda el: el['type'] != 'SOURCE_CONTROL_COMMAND', self.cache(sastcachetype.scan_actions) ) )
+        cachedata = list( filter( lambda el: el['type'] != 'POST_SCAN_COMMAND', self.cache(sastcachetype.scan_actions) ) )
         SOBJECT = OBJ_POST_SCAN_ACTION
         SSTATUS = SOK
         errorcount = 0
