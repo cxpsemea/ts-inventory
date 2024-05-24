@@ -146,8 +146,11 @@ class baserunner(object) :
             filehandler.close()    
 
 
-    def loadconfig( self, defaults = None ) :
-        self.__config = config(defaults = defaults)
+    def loadconfig( self, defaults = None, defaultname = None ) :
+        if defaultname :
+            self.__config = config(defaults = defaults, defaultname = defaultname)
+        else :
+            self.__config = config(defaults = defaults)
         self.__config.putvalue( 'version', version['version'])
         self.__verbose = self.__config.value('verbose') or self.__config.hascommand('verbose')
         if self.__config.value('help') or self.__config.value('h') or self.__config.hascommand('help') or self.__config.hascommand('h') :

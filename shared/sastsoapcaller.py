@@ -766,6 +766,7 @@ class soapapi(object):
                 aux['Protocol']             = settings['Protocol']
                 aux['GITBranch']            = settings['GITBranch']
                 aux['GITAuthentication']    = settings['GITAuthentication']
+                # aux['TFSAuthentication']    = settings['TFSAuthentication'] if settings['TFSAuthentication'] else 'None'  # Disapeared from WSDL in later versions
                 aux['GitLsViewType']        = settings['GitLsViewType']
                 aux['SSHPublicKey']         = settings['SSHPublicKey']
                 aux['SSHPrivateKey']        = settings['SSHPrivateKey']
@@ -921,6 +922,7 @@ class soapapi(object):
                 ProtocolParameters=settings['ProtocolParameters'] if settings['ProtocolParameters'] else xsd.SkipValue,
                 GITBranch=settings['GITBranch'] if settings['GITBranch'] else xsd.SkipValue,
                 GITAuthentication=settings['GITAuthentication'],
+                # TFSAuthentication=settings['TFSAuthentication'],          # Disapeared from WSDL in later versions
                 GitLsViewType=settings['GitLsViewType'],
                 SSHPublicKey=settings['SSHPublicKey'] if settings['SSHPublicKey'] else xsd.SkipValue,
                 SSHPrivateKey=settings['SSHPrivateKey'] if settings['SSHPrivateKey'] else xsd.SkipValue,
