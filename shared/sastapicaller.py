@@ -182,19 +182,22 @@ class sastapi(object):
             if (sresponse != None) :
                 # Return the result (may be odata)
                 if sresponse.status_code in [OK, MULTI_STATUS, CREATED, NO_CONTENT, ACCEPTED] :
-                    if sresponse.content and len(sresponse.content) > 3:
+                    if sresponse.content and len(sresponse.content) > 0:
                         if (sodata) :
-                            try:
-                                sret = sresponse.json()
-                                return sret['value']
-                            except:
-                                try :
-                                    sret = sresponse.text
-                                    if sret.startswith('ï»¿') :
-                                        sret = sret[3:]
-                                    return sret
-                                except :
-                                    return []
+                            if len(sresponse.content) > 3:
+                                try:
+                                    sret = sresponse.json()
+                                    return sret['value']
+                                except:
+                                    try :
+                                        sret = sresponse.text
+                                        if sret.startswith('ï»¿') :
+                                            sret = sret[3:]
+                                        return sret
+                                    except :
+                                        return []
+                            else :
+                                return []
                         else :
                             return sresponse.json()
                     else :

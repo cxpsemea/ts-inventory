@@ -52,7 +52,7 @@ class config(object) :
     #   CXTOOL_ prefix is used by default
 
 
-    def __init__(self, fileorpath = None, defaults = None, checkenvvars = True, envvarsprefix = None, autoclean = False ) :
+    def __init__(self, fileorpath = None, defaults = None, checkenvvars = True, envvarsprefix = None, autoclean = False, defaultname = 'config' ) :
         self.__content      = defaults
         self.__commands     = []
         self.__flat         = None
@@ -82,12 +82,12 @@ class config(object) :
 
         # Search for config.yaml, config.yml, config.json
         if (not self.__filename) and (path) :
-            if os.path.exists(path + os.sep + 'config.yaml') :
-                self.__filename = path + os.sep + 'config.yaml'
-            elif os.path.exists(path + os.sep + 'config.yml') :
-                self.__filename = path + os.sep + 'config.yml'
-            elif os.path.exists(path + os.sep + 'config.json') :
-                self.__filename = path + os.sep + 'config.json'
+            if os.path.exists(path + os.sep + defaultname + '.yaml') :
+                self.__filename = path + os.sep + defaultname + '.yaml'
+            elif os.path.exists(path + os.sep + defaultname + '.yml') :
+                self.__filename = path + os.sep + defaultname + '.yml'
+            elif os.path.exists(path + os.sep + defaultname + '.json') :
+                self.__filename = path + os.sep + defaultname + '.json'
 
         # Check if configuration file exists    
         if self.__filename and not os.path.exists(self.__filename) :
@@ -99,7 +99,7 @@ class config(object) :
             extension = pathlib.Path(self.__filename).suffix.lower()
             if not extension in ['.yaml', '.yml', '.json'] :
                 raise OSError( errno.ENOTTY, 'Unsupported configuration file type', self.__filename)
-
+            
         # Load configurations
         self.__config_load()
 

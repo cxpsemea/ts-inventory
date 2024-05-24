@@ -220,7 +220,7 @@ class cxoneapi(object):
             if (sresponse != None) :
                 # Return the result
                 if sresponse.status_code in [OK, MULTI_STATUS, CREATED, NO_CONTENT, ACCEPTED] :
-                    if sresponse.content and len(sresponse.content) > 3:
+                    if sresponse.content and len(sresponse.content) > 0:
                         return sresponse.json()
                     else :
                         return []
