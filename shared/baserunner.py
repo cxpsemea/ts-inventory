@@ -57,13 +57,28 @@ class baserunner(object) :
         # Detect csvseparator if not set, from locale and decimal separator
         if not self.__csvseparator :
             self.__csvseparator = ','
-            loc = locale.getlocale()  # get current locale
-            locale.setlocale(locale.LC_ALL, '')     # assign OS locale
-            decsep = locale.localeconv()["decimal_point"]
-            locale.setlocale(locale.LC_ALL, loc)    # restore saved locale
+            # get current locale
+            loc = None
+            try :
+                loc = locale.getlocale()  
+            except :
+                pass
+            # get decimal separator
+            try :
+                locale.setlocale(locale.LC_ALL, '')     # assign OS locale
+                decsep = locale.localeconv()["decimal_point"]
+            except :
+                decsep = None
+                pass
+            # restore saved locale
+            if loc :
+                try :
+                    locale.setlocale(locale.LC_ALL, loc)    
+                except :
+                    pass
             if decsep == ',' :
                 self.__csvseparator = ';'
-        return self.__csvseparator
+        return self.__csvseparator    
 
 
     # Returns the data as a list and optionally the colunm names (header) as list
