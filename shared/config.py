@@ -52,13 +52,14 @@ class config(object) :
     #   CXTOOL_ prefix is used by default
 
 
-    def __init__(self, fileorpath = None, defaults = None, checkenvvars = True, envvarsprefix = None, autoclean = False, defaultname = 'config' ) :
+    def __init__(self, fileorpath: str = None, defaults = None, checkenvvars: bool = True, envvarsprefix: str = None, autoclean: bool = False, defaultname: str = 'config', logsfolder: str = None ) :
         self.__content      = defaults
         self.__commands     = []
         self.__flat         = None
         self.__filename     = None
         self.__checkenv     = checkenvvars
         self.__autoclean    = autoclean
+        self.__logsfolder   = logsfolder
         if envvarsprefix :
             self.__envprefix    = envvarsprefix
         else :
@@ -79,6 +80,10 @@ class config(object) :
             else :
                 # File name or path not set - resolve main application location
                 path = self.mainrootpath()
+                
+        # Do we have a --logs-folder command line argument ?
+        if not self.__logsfolder :
+            self.__logsfolder = self.__command_arg('logs-folder' )
 
         # Search for config.yaml, config.yml, config.json
         if (not self.__filename) and (path) :
@@ -379,7 +384,18 @@ class config(object) :
     @property
     def flat(self) :
         return self.__flat
-
+    
+    
+    # Return defined logs folder on None (to use default)    
+    @property
+    def logsfolder(self):
+        return self.__logsfolder
+    
+    
+    # Return logs verbose mode (defaults false)    
+    @property
+    def logsverbose(self):
+        return self.value('verbose') or self.haskey('verbose')
 
 
     # Returns the value from a specific key
