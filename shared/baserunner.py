@@ -167,7 +167,8 @@ class baserunner(object) :
         else :
             self.__config = config(defaults = defaults)
         self.__config.putvalue( 'version', version['version'])
-        self.__verbose = self.__config.value('verbose') or self.__config.hascommand('verbose')
+        if not self.__verbose :
+            self.__verbose = self.__config.logsverbose
         if self.__config.value('help') or self.__config.value('h') or self.__config.hascommand('help') or self.__config.hascommand('h') :
             self.printhelp()
             sys.exit(0)
