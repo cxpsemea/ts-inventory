@@ -71,7 +71,8 @@ Execution options. Multiple can be selected.
 |--inventory|To extract a system inventory. This is the default and will be used in no extraction option is selected.|
 |--triages-count|To extract the count of triaged results per project and per state.|
 |--triages-all|To extract all the triaged results per project (heavy).|
-|--custom-queries|To extract all the cunstom queries, from SAST only.|
+|--custom-queries|To extract all the custom queries, from SAST only.|
+|--repositories|To extract all project respositories, from SAST only.|
 
 Filtering options.  Multiple can be selected.
 
@@ -121,6 +122,8 @@ Extract from SAST:
 - Inventory: **`cxinventory sast --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
 - Custom queries: **`cxinventory --custom-queries --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
 - Custom queries: **`cxinventory sast --custom-queries --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
+- Repositories: **`cxinventory --repositories --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
+- Repositories: **`cxinventory sast --repositories --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
 - Inventory & triage counts: **`cxinventory --inventory --triages-count --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
 - Inventory & triage counts: **`cxinventory sast --inventory --triages-count --verbose --sast.url https://portal.checmarx.net --sast.username username --sast.password password`**
 
