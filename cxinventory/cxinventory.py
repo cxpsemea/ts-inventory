@@ -29,6 +29,7 @@ from src.sastinventoryrunner import sastinventory
 from src.sastalltriagesrunner import sastalltriages
 from src.sastcounttriagesrunner import sastcounttriages
 from src.sastcustomqueriesrunner import sastcustomqueries
+from src.sastrepositoriesrunner import sastrepositories
 from scaconn import scaconn
 from scacache import scacachetype
 from scacache import scacache
@@ -62,6 +63,7 @@ class cxinventory(baserunner) :
         print( '  --triages-count         Extract counts of triages per state from all projects' )
         print( '  --triages-all           Extract all triaged results from all projects (heavy, please avoid)' )
         print( '  --custom-queries        Extract custom queries along with their code (sast only)' )
+        print( '  --repositories          Extract project repositories information (sast only)')
         print( 'GENERAL OPTIONS:' )
         print( '  --help, -h              This help information' )
         print( '  --verbose, -v           Verbose the execution to the console' )
@@ -152,6 +154,12 @@ class cxinventory(baserunner) :
                     errorcount += 1
                     raise Exception( 'Custom queries can only be retrived from sast, not from ' + command )
                 actions.append('custom-queries')
+            if self.config.haskey('repositories') :
+                if command != 'sast' :
+                    errorcount += 1
+                    raise Exception( 'Project repositories can only be retrived from sast, not from ' + command )
+                actions.append('repositories')
+                
             # Default is inventory
             if len(actions) == 0 :
                 cxlogger.verbose( 'Execution action not specified. Using inventory.' )
@@ -223,6 +231,9 @@ class cxinventory(baserunner) :
                     runner.execute()
                 if 'triages-all' in actions :
                     runner = sastalltriages( self.config, cxsastconn, cxsastcaches )
+                    runner.execute()
+                if 'repositories' in actions :
+                    runner = sastrepositories( self.config, cxsastconn, cxsastcaches )
                     runner.execute()
 
             # -----------------------------------------------------------------
