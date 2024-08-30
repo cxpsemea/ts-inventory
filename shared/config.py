@@ -1,26 +1,3 @@
-""" 
-========================================================================
-
-CLASS FOR HANDLING CONFIG FILES AND STRUCTURES
-
-ORDERED CALL:
-1. A yaml file  (.yaml or .yml) 
-2. A json file  (.json)
-3. Environment variables
-4. Application arguments
-
-DEFAULT CONFIG FILE WILL BE SEARCHED IN THE APPLICATION MAIN FOLDER:
-1. config.yaml
-2. config.yml
-3. config.json
-
-joao.costa@checkmarx.com
-PS-EMEA
-10-11-2022
-
-========================================================================
-"""
-
 
 import __main__
 import errno

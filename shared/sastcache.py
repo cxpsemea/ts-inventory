@@ -1,15 +1,3 @@
-""" 
-========================================================================
-
-SIMPLE CLASS TO CACHE SAST DATA
-Supports v8.8 and up
-
-joao.costa@checkmarx.com
-PS-EMEA
-22-06-2023
-
-========================================================================
-"""
 
 import os
 import json

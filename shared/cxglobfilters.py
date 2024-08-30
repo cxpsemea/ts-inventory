@@ -1,14 +1,3 @@
-""" 
-========================================================================
-
-CONVERT SAST EXCLUSIONS INTO GLOB FILTERS FOR CXONE
-
-emanuel.ribeiro@checkmarx.com
-PS-EMEA
-24-08-2023
-
-========================================================================
-"""
 
 # When transforming an exclusion to a glog, the exclusion is realy a negation.
 # That means that file exlusions like:

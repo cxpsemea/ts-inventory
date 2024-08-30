@@ -1,15 +1,3 @@
-""" 
-========================================================================
-
-GENERAL GLOBAL CLASS FOR LOG HANDLING
-
-joao.costa@checkmarx.com
-PS-EMEA
-01-11-2023
-
-========================================================================
-"""
-
 
 import os
 import traceback

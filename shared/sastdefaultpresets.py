@@ -1,24 +1,3 @@
-"""
-========================================================================
-
-CXQL PRESETS FROM SAST
- 
-antonio.silva@checkmarx.com
-PS-EMEA
-31-08-2023
- 
-Makes uses of specific collections from engine pack versions:
-- 9.3.0     in sastdefaultpresets930.py
-- 9.4.0     in sastdefaultpresets940.py
-- 9.4.5     in sastdefaultpresets945.py
-- 9.5.0     in sastdefaultpresets950.py
-- 9.5.3     in sastdefaultpresets953.py
-- 9.5.4     in sastdefaultpresets954.py
-- 9.5.5     in sastdefaultpresets930.py
-The collections were retieved from fresh installed/upgraded SAST version
-
-========================================================================
-"""
 
 # Default presets configurations, out-of-the box
 # Depending on version

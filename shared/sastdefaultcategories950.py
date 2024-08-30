@@ -1,16 +1,3 @@
-"""
-========================================================================
-
-CXQL QUERIES CATERGORIES FROM SAST V 9.5.0
- 
-antonio.silva@checkmarx.com
-PS-EMEA
-31-08-2023
- 
-The collections were retieved from fresh installed/upgraded SAST version
-
-========================================================================
-"""
 
 # Default query categories, out-of-the box
 # From SAST 9.5.0

@@ -1,24 +1,3 @@
-"""
-========================================================================
-
-CXQL QUERIES CATEGORIES FROM SAST
- 
-antonio.silva@checkmarx.com
-PS-EMEA
-31-08-2023
- 
-Makes uses of specific collections from engine pack versions:
-- 9.3.0     in sastdefaultcategories930.py
-- 9.4.0     in sastdefaultcategories940.py
-- 9.4.5     in sastdefaultcategories945.py
-- 9.5.0     in sastdefaultcategories950.py
-- 9.5.3     in sastdefaultcategories953.py
-- 9.5.4     in sastdefaultcategories954.py
-- 9.5.5     in sastdefaultcategories930.py
-The collections were retieved from fresh installed/upgraded SAST version
-
-========================================================================
-"""
 
 # Default query categories, out-of-the box
 # Depending on version

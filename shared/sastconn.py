@@ -1,21 +1,3 @@
-""" 
-========================================================================
-
-SIMPLE CLASS SAST A INDEPENDENT CXSAST
-INCLUDES SUB-OBJECTS:
-    .sast   for SAST REST API calls
-    .ac     for ACCESS-CONTROL SAST REST API calls
-    .odata  for ODATA API calls
-    .soap   for SAST SOAP calls
-    .audit  for AUDIT SOAP calls
-
-joao.costa@checkmarx.com
-PS-EMEA
-10-11-2022
-
-========================================================================
-"""
-
 
 from sastapicaller import sastapi
 from sastsoapcaller import soapapi

@@ -1,16 +1,4 @@
 
-""" 
-========================================================================
-
-SIMILARITY ID CALCULATOR FOR CXONE
-
-antonio.silva@checkmarx.com
-PS-EMEA
-24-08-2023
-
-========================================================================
-"""
-
 import os
 import numpy
 import warnings
