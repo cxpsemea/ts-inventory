@@ -97,7 +97,7 @@ jobs:
 
   # Ubuntu builds job
   build_ubuntu:
-    needs: [process_version,build_windows] 
+    needs: process_version
     runs-on: ubuntu-latest
     name: Ubuntu Builds
     env:

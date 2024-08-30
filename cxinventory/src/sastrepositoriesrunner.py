@@ -1,14 +1,3 @@
-""" 
-========================================================================
-
-SAST DATA EXTRACTOR CUSTOM QUERIES PRODUCER
-
-joao.costa@checkmarx.com
-PS-EMEA
-27-08-2024
-
-========================================================================
-"""
 
 import os
 import csv

@@ -1,15 +1,3 @@
-""" 
-========================================================================
-
-SIMPLE CLASS FOR AUDIT SOAP CALLS
-Supports v8.8 and up
-
-joao.costa@checkmarx.com
-PS-EMEA
-10-11-2022
-
-========================================================================
-"""
 
 import time
 import http

@@ -1,16 +1,3 @@
-"""
-========================================================================
-
-CXQL PRESETS FROM SAST V 9.5.3
- 
-antonio.silva@checkmarx.com
-PS-EMEA
-31-08-2023
- 
-The collections were retieved from fresh installed/upgraded SAST version
-
-========================================================================
-"""
 
 # Default presets configurations, out-of-the box
 # From SAST 9.5.3

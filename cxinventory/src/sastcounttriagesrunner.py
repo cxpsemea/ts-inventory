@@ -1,15 +1,3 @@
-""" 
-========================================================================
-
-SAST DATA EXTRACTOR TRIAGE COUNTER PRODUCER
-
-joao.costa@checkmarx.com
-PS-EMEA
-01-07-2023
-
-========================================================================
-"""
-
 
 import os
 import csv

@@ -1,18 +1,3 @@
-""" 
-========================================================================
-
-BASE CLASS FOR RUNNERS AND PRODUCERS
-
-Contains base shared code
-
-joao.costa@checkmarx.com
-PS-EMEA
-01-07-2023
-
-========================================================================
-"""
-
-
 
 import os
 import sys
