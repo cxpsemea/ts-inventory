@@ -118,6 +118,8 @@ class sastalltriages(baserunner) :
                             if query :
                                 queryname = query['Name']
                                 querylang = query['LanguageName']
+                            # Older ODATA versions don't bring detection date
+                            detectiondate = triage['DetectionDate'] if 'DetectionDate' in triage else None
                             # Write triagged result
                             self.__triagwriter.writerow( [
                                 projid,
@@ -140,7 +142,7 @@ class sastalltriages(baserunner) :
                                 queryname,
                                 querylang,
                                 triage['QueryVersionId'],
-                                triage['DetectionDate'] ] )
+                                detectiondate ] )
                         lskip += 100
                         olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Scans(' + str(scanid) + ')/Results?$top=100&$skip=' + str(lskip) +  '&$filter=StateId gt 0 or Comment ne null')
                 cxlogger.verbose( '  - Triages for [' + str(projid) + '] ' + projname + ' (' + str(lcount) + ')', False)
