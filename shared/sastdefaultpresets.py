@@ -43,5 +43,3 @@ def sastdefaultpresets( sastversion: None ) :
     else :
         from sastdefaultpresets961 import default_presets_961
         return default_presets_961
-
-

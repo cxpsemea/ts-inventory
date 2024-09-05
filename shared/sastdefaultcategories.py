@@ -43,5 +43,3 @@ def sastdefaultcategories( sastversion: None ) :
     else :
         from sastdefaultcategories961 import default_categories_961
         return default_categories_961
-
-
