@@ -3,6 +3,10 @@
 # Depending on version
 
 def sastdefaultpresets( sastversion: None ) :
+    # from SAST 9.6.3
+    if not sastversion or sastversion['enginePack'].startswith('9.6.3') :
+        from sastdefaultpresets963 import default_presets_963
+        return default_presets_963
     # from SAST 9.6.2
     if not sastversion or sastversion['enginePack'].startswith('9.6.2') :
         from sastdefaultpresets962 import default_presets_962
@@ -45,5 +49,5 @@ def sastdefaultpresets( sastversion: None ) :
         return default_presets_930
     # anything else, use the lastest
     else :
-        from sastdefaultpresets962 import default_presets_962
-        return default_presets_962
+        from sastdefaultpresets963 import default_presets_963
+        return default_presets_963

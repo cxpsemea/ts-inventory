@@ -3,6 +3,10 @@
 # Depending on version
 
 def sastdefaultcategories( sastversion: None ) :
+    # from SAST 9.6.3
+    if not sastversion or sastversion['enginePack'].startswith('9.6.3') :
+        from sastdefaultcategories963 import default_categories_963
+        return default_categories_963
     # from SAST 9.6.2
     if not sastversion or sastversion['enginePack'].startswith('9.6.2') :
         from sastdefaultcategories962 import default_categories_962
@@ -45,5 +49,5 @@ def sastdefaultcategories( sastversion: None ) :
         return default_categories_930
     # anything else, use the lastest
     else :
-        from sastdefaultcategories962 import default_categories_962
-        return default_categories_962
+        from sastdefaultcategories963 import default_categories_963
+        return default_categories_963
