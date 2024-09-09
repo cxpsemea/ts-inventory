@@ -3,6 +3,11 @@
 # Depending on version
 
 def sastdefaultpresets( sastversion: None ) :
+    # from SAST 9.6.4.1003
+    # Unusually for an engine pack patch, this patch removed four queries
+    if not sastversion or sastversion['enginePack'].startswith('9.6.4.1003') :
+        from sastdefaultpresets9641003 import default_presets_9641003
+        return default_presets_9641003
     # from SAST 9.6.4
     if not sastversion or sastversion['enginePack'].startswith('9.6.4') :
         from sastdefaultpresets964 import default_presets_964
