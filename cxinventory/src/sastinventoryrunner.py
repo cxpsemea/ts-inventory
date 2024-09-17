@@ -1141,10 +1141,10 @@ class sastinventory(baserunner) :
                     __incconstraint( SWARNING, 'projects with post-scan action' )
                 # Check unsupported repository location
                 if item['sourceSettingsType'] and item['sourceSettingsType'] not in ['local', 'custom', 'git'] :
-                    messages.append('usupported repository type ' + item['sourceSettingsType'])
+                    messages.append('unsupported repository type ' + item['sourceSettingsType'])
                     itemstatus = self.setstatus(itemstatus, SFATAL )
                     SSTATUS = self.setstatus(SSTATUS, SFATAL )
-                    __incconstraint( SFATAL, 'projects with usupported repository type' )
+                    __incconstraint( SFATAL, 'projects with unsupported repository type' )
                 # Custom team queries
                 if item['id'] in self.__xteamqry :
                     messages.append('project uses team level queries')
@@ -1159,7 +1159,7 @@ class sastinventory(baserunner) :
                     __incconstraint( SWARNING, 'projects without a full scan' )
                 # Origin uses CxFlow
                 if porigin == 'CxFlow' :
-                    messages.append('scan done with CxFlow, usupported')
+                    messages.append('scan done with CxFlow, unsupported')
                     itemstatus = self.setstatus(itemstatus, SWARNING )
                     SSTATUS = self.setstatus(SSTATUS, SWARNING )
                     __incconstraint( SWARNING, 'projects using CxFlow' )

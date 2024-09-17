@@ -108,7 +108,7 @@ class sastalltriages(baserunner) :
                                 querylang = query['LanguageName']
                             # Older ODATA versions don't bring detection date
                             detectiondate = triage['DetectionDate'] if 'DetectionDate' in triage else None
-                            # Write triagged result
+                            # Write triaged result
                             self.__triagwriter.writerow( [
                                 projid,
                                 projname,

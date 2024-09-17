@@ -140,12 +140,12 @@ class cxinventory(baserunner) :
             if self.config.haskey('custom-queries') :
                 if command != 'sast' :
                     errorcount += 1
-                    raise Exception( 'Custom queries can only be retrived from sast, not from ' + command )
+                    raise Exception( 'Custom queries can only be retrieved from sast, not from ' + command )
                 actions.append('custom-queries')
             if self.config.haskey('repositories') :
                 if command != 'sast' :
                     errorcount += 1
-                    raise Exception( 'Project repositories can only be retrived from sast, not from ' + command )
+                    raise Exception( 'Project repositories can only be retrieved from sast, not from ' + command )
                 actions.append('repositories')
                 
             # Default is inventory
@@ -166,7 +166,7 @@ class cxinventory(baserunner) :
                     cxsastconn.logon()
                     ver = cxsastconn.versionstring
                     if not ver or ver == '0' :
-                        raise Exception( 'Cound not obtain sast version' )
+                        raise Exception( 'Could not obtain sast version' )
                     cxlogger.verbose( 'Connected to SAST, version ' + ver )
                 except Exception as e:
                     errorcount += 1

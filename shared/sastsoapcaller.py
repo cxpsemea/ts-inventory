@@ -754,7 +754,7 @@ class soapapi(object):
                 aux['Protocol']             = settings['Protocol']
                 aux['GITBranch']            = settings['GITBranch']
                 aux['GITAuthentication']    = settings['GITAuthentication']
-                # aux['TFSAuthentication']    = settings['TFSAuthentication'] if settings['TFSAuthentication'] else 'None'  # Disapeared from WSDL in later versions
+                # aux['TFSAuthentication']    = settings['TFSAuthentication'] if settings['TFSAuthentication'] else 'None'  # Disappeared from WSDL in later versions
                 aux['GitLsViewType']        = settings['GitLsViewType']
                 aux['SSHPublicKey']         = settings['SSHPublicKey']
                 aux['SSHPrivateKey']        = settings['SSHPrivateKey']

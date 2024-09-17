@@ -87,7 +87,7 @@ class scacounttriages(baserunner) :
                         state = triage['state']
                         counts[state] = counts[state] + 1
 
-                # Write triagged result
+                # Write triaged result
                 self.__triagwriter.writerow( [
                     projid,
                     projname,

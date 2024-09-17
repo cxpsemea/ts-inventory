@@ -1,6 +1,6 @@
 
-# When transforming an exclusion to a glog, the exclusion is realy a negation.
-# That means that file exlusions like:
+# When transforming an exclusion to a glob, the exclusion is really a negation.
+# That means that file exclusions like:
 # - *.tmp  should be prefixed with !, resulting in !*.tmp
 # To achieve that, set the param invertnegate to True
 # Otherwise, set the param invertnegate to False

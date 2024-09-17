@@ -174,7 +174,7 @@ class querymerger(object) :
         return self.__queries[index]
     
 
-    # Gets the last ververity or the highest severity from the queries list
+    # Gets the last severity or the highest severity from the queries list
     def severity(self, highest: bool = False) :
         severity = 0
         for qry in self.__queries :
@@ -200,7 +200,7 @@ class querymerger(object) :
 
 
     # Removes comments from code using regex
-    # This code is safe, user imput is not in play here
+    # This code is safe, user input is not in play here
     def __uncommentedcode( self, qcode ) :
         def replacer(match):
             s = match.group(0)
@@ -228,7 +228,7 @@ class querymerger(object) :
         return -1
 
 
-    # Check if the code calls base.<queryname> in a recongized way, private
+    # Check if the code calls base.<queryname> in a recognized way, private
     def __codecallsbase( self, sourcecode: str, qname: str) :
         callsbase       = False
         issafe          = True
@@ -237,7 +237,7 @@ class querymerger(object) :
         # Check base invocation
         callsbase = thebase in uncommented
         # Check for assignments that will indicate danger suggesting code needs fix or manual review
-        # Such as assignement to a variable that is not "result"
+        # Such as assignment to a variable that is not "result"
         # The patterns recognized as VALID are:
         #   result = base.<queryname>
         #   result= base.<queryname>
@@ -324,7 +324,7 @@ class querymerger(object) :
                 if query.teamorprojname.startswith(queryteam) :
                     queryteam = query.teamorprojname
                 else :
-                    return STATUS_INVALID, 'Team level query not in same tree hierachy'
+                    return STATUS_INVALID, 'Team level query not in same tree hierarchy'
 
         if queryremerge :
             return STATUS_REMERGE, ''
@@ -360,7 +360,7 @@ class querymerger(object) :
         if destqueryname == '' :
             xdestqueryname = xqueryname
 
-        # If only one query, aggegation and identation are not needed
+        # If only one query, aggregation and indentation are not needed
         if len(self.__queries) == 1 :
             querycode = self.__queries[0].sourcecode
             # If query name changed, must ensure the right base.<newname> is being called/referred
