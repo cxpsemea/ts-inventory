@@ -87,7 +87,7 @@ class scaalltriages(baserunner) :
                 triages = self.conn.sca.get('/risk-management/risk-state/' + projid )
                 for triage in triages :
                     lcount += 1
-                    # Write triagged result
+                    # Write triaged result
                     self.__triagwriter.writerow( [
                         projid,
                         projname,

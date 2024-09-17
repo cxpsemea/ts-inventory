@@ -145,7 +145,7 @@ class cxonecache(object) :
 
 
     def __internal_get_keycloak_clientids( self ) :
-        # Resolve keycloak client ids for "ast-app" and "cb-app", relevant for roles and premissions
+        # Resolve keycloak client ids for "ast-app" and "cb-app", relevant for roles and permissions
         if not self.__ast_app or not self.__cb_app :
             clients = self.conn.keycloak.get('/clients')
             if not self.__ast_app :
@@ -725,10 +725,10 @@ class cxonecache(object) :
 
 
     def __internal_cachequeries( self, customonly: bool = False, includecode: bool = False ) :
-        # Curent api implementation does not have paging. Allqueries came at once.
+        # Curent api implementation does not have paging. All queries come at once.
         # Project level queries are retrieved by project, repeating all Cx and Corp ones again.
         # That's why we have to obtain the projects list first.
-        # Very inneficient, specially with many projects!!!
+        # Very inefficient, especially with many projects!!!
         if not self.__prjkeys :
             self.__prjkeys = self.__internalcacheprojectkeys()
         if not self.__appkeys :
@@ -825,7 +825,7 @@ class cxonecache(object) :
             filtered = ''
             if contentfilter :
                 filtered = ' filtered'
-            # Avoid reacreationg the cache if it already exists
+            # Avoid recreating the cache if it already exists
             if self.hascache(cachetype) :
                 return 0
             # Configurations section

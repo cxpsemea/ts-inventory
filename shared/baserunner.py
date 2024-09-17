@@ -66,7 +66,7 @@ class baserunner(object) :
         return self.__csvseparator    
 
 
-    # Returns the data as a list and optionally the colunm names (header) as list
+    # Returns the data as a list and optionally the column names (header) as list
     def csvload( self, csvfile, returnheaderslist: bool = False ) :
         csvdata = []
         if not os.path.exists(csvfile) :
@@ -120,7 +120,7 @@ class baserunner(object) :
             return
         if (type(data) is list) and len(data) == 0 :
             return
-        # Detect headers if not supplyed
+        # Detect headers if not supplied
         csvheaders = csvheaderslist
         if not csvheaders :
             row = data[0]

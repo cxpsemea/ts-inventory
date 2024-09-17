@@ -21,7 +21,7 @@ class config(object) :
     #   if not present, fileorpath with be used to load whatever is available
     # - checkenvvars: will load configurations from environment variables
     #   if fileorpath is not defined, requires "defaults" to check environment variable names
-    #   evironment variable names are uppercase and splitted by underscore ("_")
+    #   environment variable names are uppercase and split by underscore ("_")
     # - envvarsprefix: environment variables are expected to be prefixed 
     #   such as CXTOOL_, representing a CXSAST_VARIABLE_NAME 
     # - autoclean: if set, parameters without a value will be removed
@@ -89,7 +89,7 @@ class config(object) :
 
     # Load config
     def __config_load(self) :
-        # Load from configuartions file, if present
+        # Load from configuration file, if present
         self.__loadfromfile()
         # Load/override from environment variables, if present
         if self.__checkenv :
@@ -421,7 +421,7 @@ class config(object) :
 
 
     # Load a user password from keyring and assigns it to config key
-    # Returns True if the password is successfuly loaded
+    # Returns True if the password is successfully loaded
     def putkeyringpassword( self, key, section, username ) : 
         return self.__keyring_password(key, section, username)
 
