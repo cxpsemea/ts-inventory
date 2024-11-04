@@ -295,12 +295,19 @@ class sastcache(object) :
         elif not simple :
             data['triagesCount']            = None
             data['triagesCustomState']      = None
-            # Get triages per state
-            triagecount  = self.conn.odata.get('/Cxwebinterface/odata/v1/Scans(' + str(data['lastScanId']) + ')/Results/$count?$filter=StateId gt 0' )
+            # Get triages per state (can produce timeouts with big data)
+            try :
+                triagecount  = self.conn.odata.get('/Cxwebinterface/odata/v1/Scans(' + str(data['lastScanId']) + ')/Results/$count?$filter=StateId gt 0' )
+            except :
+                triagecount = 9999
             if triagecount :
                 data['triagesCount'] = int(triagecount)
             if self.__customstate :
-                triagescustom = self.conn.odata.get('/Cxwebinterface/odata/v1/Scans(' + str(data['lastScanId']) + ')/Results/$count?$filter=StateId ge ' + str(self.__customstate) )
+                # Get triages with custom states (can produce timeout with big data)
+                try :
+                    triagescustom = self.conn.odata.get('/Cxwebinterface/odata/v1/Scans(' + str(data['lastScanId']) + ')/Results/$count?$filter=StateId ge ' + str(self.__customstate) )
+                except : 
+                    triagescustom = 9999
                 if triagescustom :
                     data['triagesCustomState'] = int(triagescustom)
         if not simple :
