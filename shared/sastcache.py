@@ -402,10 +402,17 @@ class sastcache(object) :
                 if not silent and lcount % 100 == 0 :
                     cxlogger.verbose( signal + cache_name + ' (' + str(lcount) + ')', False)
         else :
-            if tiny :
-                olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + '&$select=Id,Name,IsPublic,OwningTeamId,EngineConfigurationId,PresetId,LastScanId' + pfilter + '&$expand=Preset,OwningTeam' )
-            else :
-                olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + pfilter + '&$expand=Preset,CustomFields,OwningTeam,LastScan($expand=ScannedLanguages)')
+            try :
+                if tiny :
+                    olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + '&$select=Id,Name,IsPublic,OwningTeamId,EngineConfigurationId,PresetId,LastScanId' + pfilter + '&$expand=Preset,OwningTeam' )
+                else :
+                    olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + pfilter + '&$expand=Preset,CustomFields,OwningTeam,LastScan($expand=ScannedLanguages)')
+            except :
+                lskip += 100
+                if tiny :
+                    olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + '&$select=Id,Name,IsPublic,OwningTeamId,EngineConfigurationId,PresetId,LastScanId' + pfilter + '&$expand=Preset,OwningTeam' )
+                else :
+                    olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + pfilter + '&$expand=Preset,CustomFields,OwningTeam,LastScan($expand=ScannedLanguages)')
             while len(olist) > 0 :
                 lcount += len(olist)
                 if not silent :
