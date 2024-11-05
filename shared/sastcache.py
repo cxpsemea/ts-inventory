@@ -430,10 +430,17 @@ class sastcache(object) :
                         else :
                             plist.append( pdata )
                 lskip += 100
-                if tiny :
-                    olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + '&$select=Id,Name,IsPublic,OwningTeamId,EngineConfigurationId,PresetId,LastScanId' + pfilter + '&$expand=Preset,OwningTeam' )
-                else :
-                    olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + pfilter +'&$expand=Preset,CustomFields,OwningTeam,LastScan($expand=ScannedLanguages)')    
+                try :
+                    if tiny :
+                        olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + '&$select=Id,Name,IsPublic,OwningTeamId,EngineConfigurationId,PresetId,LastScanId' + pfilter + '&$expand=Preset,OwningTeam' )
+                    else :
+                        olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + pfilter +'&$expand=Preset,CustomFields,OwningTeam,LastScan($expand=ScannedLanguages)')    
+                except :
+                    lskip += 100
+                    if tiny :
+                        olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + '&$select=Id,Name,IsPublic,OwningTeamId,EngineConfigurationId,PresetId,LastScanId' + pfilter + '&$expand=Preset,OwningTeam' )
+                    else :
+                        olist = self.conn.odata.get('/Cxwebinterface/odata/v1/Projects?$top=100&$skip=' + str(lskip) + pfilter +'&$expand=Preset,CustomFields,OwningTeam,LastScan($expand=ScannedLanguages)')    
         return plist
 
 
