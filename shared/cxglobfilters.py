@@ -18,16 +18,22 @@ class globfilters(object) :
         if filter :
             for item in filter.split(',') :
                 if item.strip() :
+                    item = item.replace('\\','/').strip()
+                    if not (item.startswith('!/') or item.startswith('/')) :
+                        if item.startswith('!') :
+                            item = '!**/' + item[1:0]
+                        else :
+                            item = '**/' + item
                     if invertnegate :
                         if item.startswith('!') :
-                            globfilter.append( item.replace('\\','/')[1:0].strip() )  
+                            globfilter.append( item[1:0] )  
                         else :
-                            globfilter.append( '!' + item.replace('\\','/').strip() )  
+                            globfilter.append( '!' + item )  
                     else :
                         if item.startswith('!') :
-                            globfilter.append( '!' + item.replace('\\','/')[1:0].strip() )  
+                            globfilter.append( '!' + item[1:0] )  
                         else :
-                            globfilter.append( item.replace('\\','/').strip() )  
+                            globfilter.append( item )  
         if len(globfilter) == 0 :
             return None
         return globfilter
