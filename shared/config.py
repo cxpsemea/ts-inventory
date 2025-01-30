@@ -50,6 +50,11 @@ class config(object) :
             configfile = self.__command_arg('config-file' )
             if configfile :
                 path = configfile
+                # Check for relative path ...
+                if not ( path.startswith('/') or path.startswith('\\') or (path.find(':\\') > 0) or (path.find(':/') > 0) ) :
+                    if path.startswith('./') or path.startswith('.\\') :
+                        path = path[2: ]
+                    path = os.path.join(self.mainrootpath(), path)
                 if (not path) or (not os.path.exists(path)) :
                     raise FileNotFoundError( errno.ENOENT, 'Configuration file or path was not found', path)
                 if os.path.isfile(path) :
@@ -159,6 +164,7 @@ class config(object) :
     def __command_arg(self, argname) :
         if not argname :
             return None
+        keyfound: bool = True
         lastkey = ''
         args = sys.argv[1:]
         for arg in args :
@@ -174,8 +180,10 @@ class config(object) :
                 # Remove initial "-" or "--"
                 lastkey = nkey.lstrip('-')
                 if lastkey.lower() == argname.lower() :
-                    return nval
-            else :
+                    keyfound = True
+                    if nval :
+                        return nval
+            elif keyfound :
                 if lastkey.lower() == argname.lower() :
                     return arg
         return None
