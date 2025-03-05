@@ -53,7 +53,7 @@ minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
 allowed_tags = ["feat", "fix", "perf", "chore", "docs"]
 other_allowed_tags = ["build", "style", "test"]
-default_bump_level = 1
+default_bump_level = 0
 
 [semantic_release.remote]
 env = "GH_TOKEN"
