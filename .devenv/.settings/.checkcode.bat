@@ -1,0 +1,1 @@
+call .devenv\check-code.bat %*

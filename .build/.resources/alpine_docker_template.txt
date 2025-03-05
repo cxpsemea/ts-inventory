@@ -1,0 +1,37 @@
+## ############################################################################
+## the builder image
+## ############################################################################
+FROM alpine AS builder
+
+RUN apk add --update --no-cache ca-certificates
+RUN apk add --update --no-cache tzdata
+RUN apk add --update --no-cache gcc
+RUN apk add --update --no-cache gdbm-dev
+RUN apk add --update --no-cache libc-dev
+RUN apk add --update --no-cache libffi-dev
+RUN apk add --update --no-cache libnsl-dev
+RUN apk add --update --no-cache libtirpc-dev
+RUN apk add --update --no-cache linux-headers
+RUN apk add --update --no-cache zlib-dev
+RUN apk add --update --no-cache tar
+RUN apk add --update --no-cache python3
+RUN apk add --update --no-cache py3-pip
+
+## set working directory
+WORKDIR /opt/app
+
+## Copy sources
+COPY . .
+
+## Install python and requirements
+RUN pip3 install -r ./requirements.txt --break-system-packages
+RUN pip3 install --upgrade pyinstaller --break-system-packages
+
+## Build it
+RUN pyinstaller --clean --noconfirm --onefile --nowindow --distpath=.dist/alpine --workpath=temp --paths=./shared ./{{filename}}
+
+## Bundle tar.gz
+RUN if [ -e ./src/cxconfig.yaml ]; then cp ./src/cxconfig.yaml .dist/alpine/config.yaml; fi
+RUN if [ -e ./LICENSE ]; then cp ./LICENSE .dist/alpine/LICENSE; fi
+RUN tar -czvf .dist/{{appname}}-alpine64.tar.gz -C .dist/alpine .
+

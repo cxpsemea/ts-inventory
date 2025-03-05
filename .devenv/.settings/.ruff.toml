@@ -1,0 +1,42 @@
+indent-width = 4
+line-length = 200
+preview = true
+extend-exclude = ["test*"]
+cache-dir = ".devenv/.ruff_cache"
+
+[lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+# preview = true
+select = ["E", "W", "F", "N", "C", "I"]
+ignore = ["E302", "E303", "E201", "E202", "E203", "E251", "E501"]
+
+[format]
+# preview = true
+quote-style = "single"
+
+[lint.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "single"
+
+[lint.isort]
+force-single-line = true
+force-wrap-aliases = true
+combine-as-imports = true
+from-first = false
+no-sections = true
+known-local-folder = ["shared"]
+lines-after-imports = 2
+
+[lint.pycodestyle]
+max-line-length = 200
+
+[lint.pydocstyle]
+convention = "google"
+
+[lint.mccabe]
+max-complexity = 80
+
+[lint.pylint]
+max-args = 10

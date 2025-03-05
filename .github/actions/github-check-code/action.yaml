@@ -1,0 +1,19 @@
+name: 'Github - Check source code'
+description: "Lint and check the code"
+
+runs:
+  using: 'composite'
+  steps:
+
+    - id: setup-python
+      shell: bash
+      run: |
+        pip install ruff --upgrade
+
+    - id: lint-and-check
+      shell: bash
+      run: |
+        ruff check . --config .devenv/.settings/.ruff.toml
+      env:
+        GH_TOKEN: ${{ github.token }}    
+

@@ -1,0 +1,94 @@
+#############################################################################
+## The publish job creates compiled binaries and docker files and images
+## Creates and publishes binary executables
+## Executed on dispatch (manually)
+#############################################################################
+name: 'Publish'
+
+on: workflow_dispatch
+
+env:
+  ## put your python root file, including the path (if not root) and extension, in the variable below, i.e. myprogram.py
+  ROOT_FILE: ""
+      
+jobs:
+  publish-linuxes: 
+    name: 'Publish Linux Binaries'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+      issues: write 
+      pull-requests: write 
+    steps:
+      ### checkout the code
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+          fetch-tags: true
+          token: ${{ secrets.GH_USER_TOKEN }}
+      ### publish ubuntu
+      - name: 'Publish Ubuntu'
+        uses: ./.github/actions/github-build-ubuntu
+        with:
+          root-file: ${{ env.ROOT_FILE }}
+      ### publish alpine
+      - name: 'Publish Alpine'
+        uses: ./.github/actions/github-build-alpine
+        with:
+          root-file: ${{ env.ROOT_FILE }}
+      ### publish rocky
+      - name: 'Publish Rocky'
+        uses: ./.github/actions/github-build-rocky
+        with:
+          root-file: ${{ env.ROOT_FILE }}
+      ### publish docker tar 
+      - name: 'Publish Docker'
+        uses: ./.github/actions/github-build-docker
+        with:
+          root-file: ${{ env.ROOT_FILE }}
+
+  publish-windows: 
+    name: 'Publish Windows Binaries'
+    runs-on: windows-latest
+    permissions:
+      contents: write 
+      issues: write 
+      pull-requests: write 
+    steps:
+      ### checkout the code
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+          fetch-tags: true
+          token: ${{ secrets.GH_USER_TOKEN }}
+      ### publish windows
+      - name: 'Publish Windows'
+        uses: ./.github/actions/github-build-windows
+        with:
+          root-file: ${{ env.ROOT_FILE }}
+
+  publish-macos:
+    name: 'Publish MacOS Binaries'
+    runs-on: macos-latest
+    permissions:
+      contents: write 
+      issues: write 
+      pull-requests: write 
+    steps:
+      ### checkout the code
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+          fetch-tags: true
+          token: ${{ secrets.GH_USER_TOKEN }}
+      ### publish windows
+      - name: 'Publish MacOS'
+        uses: ./.github/actions/github-build-macos
+        with:
+          root-file: ${{ env.ROOT_FILE }}

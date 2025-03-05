@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo ""
+echo "Checking commit message"
+commitlint --hide-input --skip-detail --file "$1"

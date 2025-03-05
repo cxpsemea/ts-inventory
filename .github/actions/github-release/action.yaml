@@ -1,0 +1,18 @@
+name: 'Github - Release version'
+description: "Released version"
+
+runs:
+  using: 'composite'
+  steps:
+
+    - id: setup-python
+      shell: bash
+      run: |
+        pip install python-semantic-release --upgrade
+
+    - id: release-version
+      shell: bash
+      run: |
+        semantic-release --config .devenv/.settings/.semantic-release.toml version --no-commit --tag
+      env:
+        GH_TOKEN: ${{ github.token }}

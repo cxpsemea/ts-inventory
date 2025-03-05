@@ -1,0 +1,24 @@
+## ############################################################################
+## the builder image
+## ############################################################################
+FROM rockylinux:9 as builder
+
+RUN yum install -y python3-pip
+
+## set working directory
+WORKDIR /opt/app
+
+## Copy sources
+COPY . .
+
+RUN pip3 install -r ./requirements.txt
+RUN pip3 install --upgrade pyinstaller
+
+RUN pyinstaller --clean --noconfirm --onefile --nowindow --distpath=.dist/rocky --workpath=temp --paths=./shared ./{{filename}}
+
+# Bundle tar.gz
+RUN if [ -e ./src/cxconfig.yaml ]; then cp ./src/cxconfig.yaml .dist/rocky/config.yaml; fi
+RUN if [ -e ./LICENSE ]; then cp ./LICENSE .dist/rocky/LICENSE; fi
+
+RUN tar -czvf .dist/{{appname}}-rocky64.tar.gz -C .dist/rocky .
+

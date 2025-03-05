@@ -1,0 +1,33 @@
+#############################################################################
+## The release job creates release tags based on commit messages.
+## Executed on push
+#############################################################################
+name: 'Release'
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'dev'
+      
+jobs:
+  release:
+    name: 'Create release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+      issues: write 
+      pull-requests: write 
+    steps:
+      ### checkout the code (don't need submodules, need tags)
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      ### validate source-code
+      - name: 'Verify Source Code'
+        uses: ./.github/actions/github-check-code
+      ### release a new version
+      - name: 'Release version'
+        uses: ./.github/actions/github-release
