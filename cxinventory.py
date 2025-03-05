@@ -5,10 +5,10 @@ from shared.package.common.cxlogging import ERROR
 from shared.package.common.cxlogging import cxlogger
 from src.configuration import config_settings
 from src.cxsastinventory import CxSastInventory
+from src.cxscainventory import CxScaInventory
 
 
 # from src.cxoneinventory import CxOneInventory
-# from src.cxscainventory import CxScaInventory
 
 
 def execute() :
@@ -42,10 +42,10 @@ def execute() :
             #     runner: CxOneInventory = CxOneInventory()
             #     errorcount += runner.execute()
 
-            # elif cxconfig.hascommand('sca') :
+            elif cxconfig.hascommand('sca') :
 
-            #     runner: CxScaInventory = CxScaInventory()
-            #     errorcount += runner.execute()
+                runner: CxScaInventory = CxScaInventory()
+                errorcount += runner.execute()
 
             else :
                 if cxlogger.loglevel <= ERROR :
