@@ -4,11 +4,9 @@ from shared.package.common.cxconfig import cxconfig
 from shared.package.common.cxlogging import ERROR
 from shared.package.common.cxlogging import cxlogger
 from src.configuration import config_settings
+from src.cxoneinventory import CxOneInventory
 from src.cxsastinventory import CxSastInventory
 from src.cxscainventory import CxScaInventory
-
-
-# from src.cxoneinventory import CxOneInventory
 
 
 def execute() :
@@ -37,10 +35,10 @@ def execute() :
                 runner: CxSastInventory = CxSastInventory()
                 errorcount += runner.execute()
 
-            # elif cxconfig.hascommand('cxone') :
+            elif cxconfig.hascommand('cxone') :
 
-            #     runner: CxOneInventory = CxOneInventory()
-            #     errorcount += runner.execute()
+                runner: CxOneInventory = CxOneInventory()
+                errorcount += runner.execute()
 
             elif cxconfig.hascommand('sca') :
 
