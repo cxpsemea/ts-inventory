@@ -1,0 +1,40 @@
+#############################################################################
+## The publish job creates compiled binaries and docker files and images
+## Creates and publishes docker image in ghio.com repository
+## Executed on release publish
+#############################################################################
+name: 'Publish'
+
+on:
+  release:
+    types: [published]
+
+env:
+  ## put your python root file, including the path (if not root) and extension, in the variable below, i.e. myprogram.py
+  ROOT_FILE: ""
+
+      
+jobs:
+  publish-docker:
+    name: 'Publish Docker Release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+      issues: write 
+      pull-requests: write 
+    steps:
+      ### checkout the code
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+          fetch-tags: true
+          token: ${{ secrets.GH_USER_TOKEN }}
+      ### Publish docker image
+      - name: 'Publish Docker'
+        uses: ./.github/actions/github-publish-docker
+        with:
+          root-file: $ROOT_FILE
+          user-email: ${{ secrets.GH_USER_EMAIL }}
+          user-token: ${{ secrets.GH_USER_TOKEN }}

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo ""
+echo "CHECKING COMMIT"
+echo "==============="
+echo ""
+
+## Grant we are not commiting to a protected branch
+current_branch="$(git branch --show-current)"
+for protected_branch in "main" "dev"; do
+    if [[ "$protected_branch" == "$current_branch" ]]; then
+        echo "Target branch $current_branch is protected" 
+        exit 1
+    fi
+done
+
+## Lint the code for conformity
+exit_code=0
+ruff check . --config .devenv/.settings/.ruff.toml || exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+	echo "Check your code for linting rules"
+	exit 1
+fi
+
+## Compose a CHANGELOG
+exists=1
+if [ ! -f CHANGELOG.md ]; then
+	exists=0
+	touch CHANGELOG.md
+	echo "<!-- insertion marker -->" >> CHANGELOG.md
+fi
+git-changelog -o CHANGELOG.md -n semver -c angular -p github --in-place --sections chore,feat,fix,perf,doc
+git add CHANGELOG.md

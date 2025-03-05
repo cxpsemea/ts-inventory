@@ -1,0 +1,29 @@
+
+## ############################################################################
+## the production image
+## ############################################################################
+FROM alpine AS production
+
+RUN apk add --update --no-cache ca-certificates
+RUN apk add --update --no-cache tzdata
+RUN apk add --update --no-cache gcc
+RUN apk add --update --no-cache gdbm-dev
+RUN apk add --update --no-cache libc-dev
+RUN apk add --update --no-cache libffi-dev
+RUN apk add --update --no-cache libnsl-dev
+RUN apk add --update --no-cache libtirpc-dev
+RUN apk add --update --no-cache linux-headers
+RUN apk add --update --no-cache zlib-dev
+RUN apk add --update --no-cache tar
+RUN apk add --update --no-cache wget
+
+## set working directory
+WORKDIR /opt/app
+
+## copy build binary to working dir
+COPY --from=builder /opt/app/.dist/alpine/. .
+
+## use non root user
+USER nonroot
+
+ENTRYPOINT [ "/opt/app/{{appname}}" ]

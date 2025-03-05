@@ -1,0 +1,50 @@
+name: 'Github - Build Windows'
+description: "Build windows binaries"
+
+inputs:
+
+  root-file: 
+    description: 'Application root file name'
+    required: true
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+
+    - id: setup-python
+      shell: pwsh
+      run: |
+        pip install python-semantic-release --upgrade
+        pip install -r requirements.txt
+        if ([System.IO.File]::Exists("shared\requirements.txt")) { pip install -r shared\requirements.txt }
+
+    - id: set-version
+      shell: pwsh
+      run: |
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print > cxversion.txt
+        $global:cx_temp_ver=Get-Content -Path .\cxversion.txt -TotalCount 1
+        echo APP_VERSION=$global:cx_temp_ver | Out-File -FilePath $env:GITHUB_ENV -Append
+        .build/.settings/build-version.bat $global:cx_temp_ver
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print-last-released-tag > cxversion.txt
+        $global:cx_temp_tag=Get-Content -Path .\cxversion.txt -TotalCount 1
+        echo "APP_TAG=$global:cx_temp_tag" | Out-File -FilePath $env:GITHUB_ENV -Append
+        $global:cx_temp_app=([io.fileinfo]"${{inputs.root-file}}").Basename
+        echo "APP_NAME=$global:cx_temp_app" | Out-File -FilePath $env:GITHUB_ENV -Append
+      env:
+        GH_TOKEN: ${{ github.token }}    
+
+    - id: build-windows
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      shell: pwsh 
+      run: |
+        ./.build/build-windows.bat ${{inputs.root-file}} ${{env.APP_VERSION}}
+
+    - id: release-windows
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ".dist/${{ env.APP_NAME }}-win64.zip"
+        asset_name: "${{ env.APP_NAME }}-win64.zip"
+        tag: ${{ env.APP_TAG }}
+        overwrite: true

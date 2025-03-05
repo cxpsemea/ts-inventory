@@ -1,0 +1,50 @@
+name: 'Github - Build Docker'
+description: "Build docker container image tar"
+
+inputs:
+
+  root-file: 
+    description: 'Application root file name'
+    required: true
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+
+    - id: setup-python
+      shell: bash
+      run: |
+        pip install python-semantic-release --upgrade
+        pip install -r requirements.txt
+        if [ -f shared/requirements.txt ] ; then
+          pip install -r shared/requirements.txt
+        fi
+
+    - id: set-version
+      shell: bash
+      run: |
+        chmod +x .build/.settings/build-version.sh
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print > cxversion.txt
+        .build/.settings/build-version.sh "$(<cxversion.txt)"
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print-last-released-tag > cxversion.txt
+        echo APP_TAG=$(<cxversion.txt) >> $GITHUB_ENV
+        echo APP_NAME=$(basename -s .py "${{inputs.root-file}}") >> $GITHUB_ENV
+      env:
+        GH_TOKEN: ${{ github.token }}    
+
+    - id: build-docker
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      shell: bash
+      run: |
+        chmod +x .build/build-docker.sh
+        ./.build/build-docker.sh ${{inputs.root-file}} ${{env.APP_TAG}}
+
+    - id: release-docker
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ".dist/${{ env.APP_NAME }}-docker.tar"
+        asset_name: "${{ env.APP_NAME }}-docker.tar"
+        tag: ${{ env.APP_TAG }}
+        overwrite: true

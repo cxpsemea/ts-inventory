@@ -1,0 +1,79 @@
+name: 'Github - Publish Docker'
+description: "Build and publish docker container image"
+
+inputs:
+
+  root-file: 
+    description: 'Application root file name'
+    required: true
+    type: string
+  user-email:
+    description: 'Docker repository user'
+    required: true
+    type: string
+  user-token:
+    description: 'Docker repository token'
+    required: true
+    type: string
+    
+
+runs:
+  using: 'composite'
+  steps:
+
+    - id: setup-python
+      shell: bash
+      run: |
+        pip install python-semantic-release --upgrade
+        pip install -r requirements.txt
+        if [ -f shared/requirements.txt ] ; then
+          pip install -r shared/requirements.txt
+        fi
+
+    - id: set-version
+      shell: bash
+      run: |
+        chmod +x .build/.settings/build-version.sh
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print > cxversion.txt
+        .build/.settings/build-version.sh "$(<cxversion.txt)"
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print-last-released-tag > cxversion.txt
+        echo APP_TAG=$(<cxversion.txt) >> $GITHUB_ENV
+        echo APP_NAME=$(basename -s .py "${{inputs.root-file}}") >> $GITHUB_ENV
+      env:
+        GH_TOKEN: ${{ github.token }}
+    
+    - id: setup-docker-file
+      shell: bash
+      run: |
+        chmod +x .build/publish-docker-file.sh
+        ./.build/publish-docker-file.sh ${{inputs.root-file}} ${{env.APP_TAG}}
+
+    - id: setup-docker-buildx
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      uses: docker/setup-buildx-action@v3
+
+    - id: setup-docker-repository
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      uses: docker/login-action@v3
+      with:
+        registry: 'https://ghcr.io'
+        username: ${{ inputs.user-email }}
+        password: ${{ inputs.user-token }}
+
+    - id: publish-docker-repository        
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        file: './dockerfilexx'
+        tags: 'ghcr.io/cxpsemea/${{ env.APP_NAME }}:${{ env.APP_TAG }}'
+        build-args: |
+          GH_USER=${{ inputs.user-email }}
+          GH_TOKEN=${{ inputs.user-token }}
+
+    - id: cleanup-docker-file
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      shell: bash
+      run: |
+        if [ -e dockerfilexx ]; then rm -f -r --interactive=never dockerfilexx; fi

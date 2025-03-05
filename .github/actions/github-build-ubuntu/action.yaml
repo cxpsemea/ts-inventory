@@ -1,0 +1,50 @@
+name: 'Github - Build Ubuntu'
+description: "Build ubuntu linux binaries"
+
+inputs:
+
+  root-file: 
+    description: 'Application root file name'
+    required: true
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+
+    - id: setup-python
+      shell: bash
+      run: |
+        pip install python-semantic-release --upgrade
+        pip install -r requirements.txt
+        if [ -f shared/requirements.txt ] ; then
+          pip install -r shared/requirements.txt
+        fi
+
+    - id: set-version
+      shell: bash
+      run: |
+        chmod +x .build/.settings/build-version.sh
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print > cxversion.txt
+        .build/.settings/build-version.sh "$(<cxversion.txt)"
+        semantic-release --noop --config .devenv/.settings/.semantic-release.toml version --print-last-released-tag > cxversion.txt
+        echo APP_TAG=$(<cxversion.txt) >> $GITHUB_ENV
+        echo APP_NAME=$(basename -s .py "${{inputs.root-file}}") >> $GITHUB_ENV
+      env:
+        GH_TOKEN: ${{ github.token }}    
+
+    - id: build-ubuntu
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      shell: bash
+      run: |
+        chmod +x .build/build-ubuntu.sh
+        ./.build/build-ubuntu.sh ${{inputs.root-file}}
+
+    - id: release-ubuntu
+      if: ${{ ( env.APP_TAG != '' ) && ( env.APP_NAME != '' ) }}
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ".dist/${{ env.APP_NAME }}-ubuntu64.tar.gz"
+        asset_name: "${{ env.APP_NAME }}-ubuntu64.tar.gz"
+        tag: ${{ env.APP_TAG }}
+        overwrite: true

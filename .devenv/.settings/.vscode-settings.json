@@ -1,0 +1,9 @@
+{
+    "python.analysis.extraPaths": [
+        "./shared"
+    ],
+    "git.branchProtection": [
+        "main",
+        "dev"
+    ]    
+}
