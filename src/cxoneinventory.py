@@ -353,7 +353,7 @@ class CxOneInventory(object) :
                     perm_warns.append("User is not authorized to retrieve IdP data!")
                 # Check for ast permissions
                 if 'view-tenant-params' not in cxoneperms['ast'] :
-                    perm_warns.append( "User is not authorized to retrieve engine configuration data!" )
+                    perm_warns.append( "User is not authorized to retrieve tenant configuration data!" )
                 if 'view-queries' not in cxoneperms['ast'] :
                     perm_warns.append( "User is not authorized to retrieve queries data!" )
                 if 'view-preset' not in cxoneperms['ast'] :

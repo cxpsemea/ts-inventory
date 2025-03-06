@@ -17,9 +17,20 @@ cxone:
     proxy_url: 
     proxy_username: 
     proxy_password: 
+sca:
+    url: 
+    tenant:
+    username:
+    password:
+    iamurl:
+    insecure: false
+    proxy_url:
+    proxy_username:
+    proxy_password:
 options:
     no-iam: false
     detailed-users: false
+    include-repos: false
     no-scans: false
     no-triages: false
     projects-filter: 
