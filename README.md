@@ -11,6 +11,13 @@ Assist on migration planning, especially for SAST to CXONE migrations, by identi
 
 The tool can extract data from SAST, CXONE, or SCA instances.
 
+### Index
+
+[Index 1](https://github.com/cxpsemea/ts-inventory/edit/main/README.md#invocation-commands-options-and-arguments)
+
+[Index 2](https://github.com/cxpsemea/ts-inventory/edit/main/README.md#examples-command-line)
+
+[Index 3](#examples-command-line)
 
 ## Invocation commands, options, and arguments
 
@@ -115,6 +122,6 @@ Up to 10 CSV files are generated with the relevant content, with the names prefi
 |*_inventoryapplications.csv|CXONE|Existing applications.|
 |*_inventoryprojects.csv|SAST, CXONE, SCA|List of existing projects.|
 
-### Notice
+## Notice
 
 Tooling developed using Python. Please use Python3!
