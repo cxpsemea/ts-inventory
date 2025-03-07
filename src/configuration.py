@@ -240,7 +240,7 @@ config_settings = {
         "default": None,
         "datatype": "bool" },
     "options.projects-filter": {
-        "type": "flag",
+        "type": "param",
         "help": "Filter the projects ids to process (default is all)",
         "description": "Filter the projects to process, using id, list of ids, or a @file with ids to include",
         "required": False,

@@ -14,4 +14,8 @@
 
 - update config.yaml contents ([b3379b1](https://github.com/cxpsemea/ts-inventory/commit/b3379b1bd24c0d329adc0ab701c0b5b624db4daa) by jcostacx).
 
+### Docs
+
+- update readme ([19a26b3](https://github.com/cxpsemea/ts-inventory/commit/19a26b3b128442e7fb0c981bcfcada02a136dd63) by jcostacx).
+
 <!-- insertion marker -->
