@@ -16,7 +16,8 @@ The tool can extract data from SAST, CXONE, or SCA instances.
 - [Invocation commands, options, and arguments](#invocation-commands-options-and-arguments)
 - [Examples (command line)](#examples-command-line)
 - [Execution output](#execution-output)
-- [Required Permissions](#required-permissions)
+- [Required permissions](#required-permissions)
+- [Execution benchmarks](#execution-benchmarks)
 - [Notice](#notice)
 
 ## Invocation commands, options, and arguments
@@ -174,6 +175,20 @@ Recommended roles: "SCA Manager" and "Access Control Manager", or the minimum pe
 |manage-authentication-providers|Required to retrieve external IdP configurations. If missing data will not be collected.|
 |manage-roles|Required to retrieve roles. If missing data will not be collected.|
 |view|Required to retrieve projects, scans, and results. ***Mandatory***, if missing the inventory will not run.|
+
+## Execution benchmarks
+
+The tool uses APIs to collect data. The execution speed depends on the volume of projects and the detail of data being collected.
+
+Below a *indicative* averages for SAST inventory, for a volume of **11K** projects, with different execution options.
+
+|Options|Avg Duration|Description|
+|---|---|---|
+|include-repos|8hrs 30mins|**All** project data is collected: including scans, triage counts, and repository detail.|
+|no-triages|2hrs 30mins|Collected project data includes scans but does not include triage counts nor repository detail.|
+|no-scans|4mins|Collected project data does not include scans, triage counts, nor repository detail.|
+
+*Note: Scans, triages, and repository detail, require additional API calls ***per each project***, what explains the duration increase.*
 
 ## Notice
 
